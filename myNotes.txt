@@ -1,0 +1,11 @@
+
+                        MY NOTES ON THIS PROJECT:
+                  ************************************
+
+More information about the canvas and its manipulation:
+
+1) http://www.html5canvastutorials.com/tutorials/html5-canvas-element
+
+2) http://www.w3schools.com/html/html5_canvas.asp
+
+--------------------------------------------------------------------------------------------
