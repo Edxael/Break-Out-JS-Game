@@ -12,6 +12,8 @@ let ballRadius = 10
 let paddleHeight = 3
 let paddleWidth = 75
 let paddleX = (canvas.width - paddleWidth) / 2
+let score = 0
+let lives = 3
 
 // Keyboard Control Variables
 let rightPressed = false
@@ -30,7 +32,7 @@ let bricks = []
 for(let c = 0; c < brickCoumnCount; c++){
   bricks[c] = []
   for(let r = 0; r < brickRowCount; r++){
-    bricks[c][r] = { x: 0, y: 0 }
+    bricks[c][r] = { x: 0, y: 0, status: 1 }
   }
 }
 
@@ -48,17 +50,22 @@ const drawBricks = () => {
   for(let c = 0; c < brickCoumnCount; c++){
     for(let r = 0; r < brickRowCount; r++){
 
-      let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft
-      let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop
+      // Check if the brick has been hit if yes do not draw it.
+      if(bricks[c][r].status == 1){
 
-      bricks[c][r].x = brickX
-      bricks[c][r].y = brickY
+        let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft
+        let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop
 
-      ctx.beginPath()
-      ctx.rect(brickX, brickY, brickWidth, brickHeight)
-      ctx.fillStyle = "rgb(152, 103, 213)"
-      ctx.fill()
-      ctx.closePath()
+        bricks[c][r].x = brickX
+        bricks[c][r].y = brickY
+
+        ctx.beginPath()
+        ctx.rect(brickX, brickY, brickWidth, brickHeight)
+        ctx.fillStyle = "rgb(152, 103, 213)"
+        ctx.fill()
+        ctx.closePath()
+
+      }
 
     }
   }
@@ -81,6 +88,42 @@ const drawPaddle = () => {
   ctx.closePath()
 }
 
+
+const hitBrick = () => {
+  for(let c = 0; c < brickCoumnCount; c++){
+    for(let r = 0; r < brickRowCount; r++){
+       let b = bricks[c][r]
+
+       // Coallition Calculations
+       if(b.status == 1){
+         if((x > b.x) && (x < b.x + brickWidth) && (y > b.y) && (y < b.y + brickHeight)){
+           dy = -dy
+           b.status = 0
+           score += 1
+           if(score == brickRowCount * brickCoumnCount){
+             alert("You WIN Congratulations.")
+             document.location.reload()
+           }
+         }
+       }
+    }
+  }
+}
+
+
+const drawScore = () => {
+  ctx.font = "16px Arial"
+  ctx.fillStyle = "white"
+  ctx.fillText("Score: " + score, 8, 20)
+}
+
+const drawLives = () => {
+  ctx.font = "16px Arial"
+  ctx.fillStyle = "white"
+  ctx.fillText("Lives: " + lives, canvas.width - 65, 20)
+}
+
+
 function keyDownHandler (e) {
   if(e.keyCode == 39){ rightPressed = true }
   if(e.keyCode == 37){ leftPressed = true }
@@ -97,6 +140,10 @@ const draw = () => {
   drawBall()
   drawPaddle()
   drawBricks()
+  drawScore()
+  drawLives()
+  hitBrick()
+
 
   // Border Coallition Detection direction change.
   // if((y + dy < ballRadius) || (y + dy > canvas.height - ballRadius)){ dy = -dy }
@@ -106,11 +153,27 @@ const draw = () => {
     if(x > paddleX && x < paddleX + paddleWidth ){
       dy = -dy
     }else{
-      alert("GAME OVER...")
-      x = canvas.width/2
-      y = canvas.height - 30
-      dx = 2
-      dy = -2
+      lives -= 1
+      console.log(lives);
+      if(lives <= 0){
+        alert("GAME OVER... Want to Play AGAIN... ?")
+        document.location.reload()
+
+        // alert("GAME OVER...")
+        // x = canvas.width/2
+        // y = canvas.height - 30
+        // dx = 2
+        // dy = -2
+      }else {
+        x = canvas.width/2
+        y = canvas.height - 30
+        dx = 2
+        dy = -2
+
+        paddleX = (canvas.width - paddleWidth) / 2
+      }
+
+
     }
 
   }
@@ -125,6 +188,8 @@ const draw = () => {
   // Changing the location of the ball
   x += dx
   y += dy
+
+  // requestAnimationFrame(draw)  // <------ Pasing control of the refresing draw funtion to the browser for bertter performance
 }
 
 
@@ -133,3 +198,4 @@ const draw = () => {
 // ============================================================================================-
 // CODE EXECUTION
 setInterval(draw, 10)
+// draw()
