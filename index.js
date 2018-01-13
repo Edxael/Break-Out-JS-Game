@@ -1,5 +1,7 @@
 console.log("Game Code V: 1.0.0");
 
+// -------------------------------------------------------------------------------------------------
+// VARIABLE DECLARATIONS
 const canvas = document.getElementById("myCanvas")
 const ctx = canvas.getContext('2d')
 let x = canvas.width/2
@@ -15,10 +17,14 @@ let paddleX = (canvas.width - paddleWidth) / 2
 let rightPressed = false
 let leftPressed = false
 
+// Create event listener for arrow keys
+document.addEventListener("keydown", keyDownHandler)
+document.addEventListener("keyup", keyUpHandler)
 
 
 
-
+// -------------------------------------------------------------------------------------------------
+// FUNCTION DECLARATIONS
 const drawBall = () => {
   ctx.beginPath()
   ctx.arc(x, y, ballRadius, 0, Math.PI*2, false)
@@ -36,6 +42,15 @@ const drawPaddle = () => {
   ctx.closePath()
 }
 
+const keyDownHandler = (e) => {
+  if(e.keyCode == 39){ rightPressed = true }
+  if(e.keyCode == 37){ leftPressed = true }
+}
+const keyUpHandler = (e) => {
+  if(e.keyCode == 39){ rightPressed = false }
+  if(e.keyCode == 37){ leftPressed = false }
+}
+
 
 const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -51,4 +66,9 @@ const draw = () => {
   y += dy
 }
 
+
+
+
+// -------------------------------------------------------------------------------------------------
+// CODE EXECUTION
 setInterval(draw, 20)
