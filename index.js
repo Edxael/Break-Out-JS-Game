@@ -197,5 +197,8 @@ const draw = () => {
 
 // ============================================================================================-
 // CODE EXECUTION
-setInterval(draw, 10)
+const run1 = () => {
+  setInterval(draw, 10)
+}
+
 // draw()

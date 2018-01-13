@@ -4,7 +4,7 @@
 Basic take on the classic game BREAKOUT
 
 
-![Screen Shoot](sc1.png)
+![Screen Shoot](sc2.png)
 
 
 ### This project was created using:
