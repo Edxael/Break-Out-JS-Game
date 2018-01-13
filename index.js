@@ -47,12 +47,15 @@ document.addEventListener("keyup", keyUpHandler)
 const drawBricks = () => {
   for(let c = 0; c < brickCoumnCount; c++){
     for(let r = 0; r < brickRowCount; r++){
-      
-      bricks[c][r].x = 0
-      bricks[c][r].y = 0
+
+      let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft
+      let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop
+
+      bricks[c][r].x = brickX
+      bricks[c][r].y = brickY
 
       ctx.beginPath()
-      ctx.rect(0, 0, brickWidth, brickHeight)
+      ctx.rect(brickX, brickY, brickWidth, brickHeight)
       ctx.fillStyle = "rgb(152, 103, 213)"
       ctx.fill()
       ctx.closePath()
@@ -93,6 +96,7 @@ const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawBall()
   drawPaddle()
+  drawBricks()
 
   // Border Coallition Detection direction change.
   // if((y + dy < ballRadius) || (y + dy > canvas.height - ballRadius)){ dy = -dy }
