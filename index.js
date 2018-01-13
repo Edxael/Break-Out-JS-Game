@@ -17,14 +17,50 @@ let paddleX = (canvas.width - paddleWidth) / 2
 let rightPressed = false
 let leftPressed = false
 
+// Variable for the Bricks
+let brickRowCount = 3
+let brickCoumnCount = 5
+let brickWidth = 75
+let brickHeight = 20
+let brickPadding = 10
+let brickOffsetTop = 30
+let brickOffsetLeft = 30
+let bricks = []
+
+for(let c = 0; c < brickCoumnCount; c++){
+  bricks[c] = []
+  for(let r = 0; r < brickRowCount; r++){
+    bricks[c][r] = { x: 0, y: 0 }
+  }
+}
+
+
 // Create event listener for arrow keys
 document.addEventListener("keydown", keyDownHandler)
 document.addEventListener("keyup", keyUpHandler)
 
 
 
-// -------------------------------------------------------------------------------------------------
+// ============================================================================================
 // FUNCTION DECLARATIONS
+
+const drawBricks = () => {
+  for(let c = 0; c < brickCoumnCount; c++){
+    for(let r = 0; r < brickRowCount; r++){
+      
+      bricks[c][r].x = 0
+      bricks[c][r].y = 0
+
+      ctx.beginPath()
+      ctx.rect(0, 0, brickWidth, brickHeight)
+      ctx.fillStyle = "rgb(152, 103, 213)"
+      ctx.fill()
+      ctx.closePath()
+
+    }
+  }
+}
+
 const drawBall = () => {
   ctx.beginPath()
   ctx.arc(x, y, ballRadius, 0, Math.PI*2, false)
@@ -90,6 +126,6 @@ const draw = () => {
 
 
 
-// -------------------------------------------------------------------------------------------------
+// ============================================================================================-
 // CODE EXECUTION
 setInterval(draw, 10)
